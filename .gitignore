@@ -1,6 +1,6 @@
 # Built binary
 /bin/
-kubesay
+/kubesay
 
 # Kubeconfig files and cluster credentials
 kubeconfig
