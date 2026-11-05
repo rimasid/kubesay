@@ -1,0 +1,10 @@
+# Minimal, sensible default lint set for KubeSay.
+# The full configuration is added later (task 18.4).
+linters:
+  enable:
+    - govet
+    - staticcheck
+    - errcheck
+    - ineffassign
+    - unused
+    - gofmt
