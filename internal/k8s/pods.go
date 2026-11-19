@@ -5,6 +5,7 @@ import (
 	"fmt"
 	"time"
 
+	corev1 "k8s.io/api/core/v1"
 	metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
 	"k8s.io/client-go/kubernetes"
 )
@@ -55,6 +56,19 @@ func ListPods(ctx context.Context, cs kubernetes.Interface, ns string) ([]PodSum
 		})
 	}
 	return summaries, nil
+}
+
+// GetPod fetches a single pod by its exact name in namespace ns. This differs
+// from ListPods, which lists every pod in a namespace and returns summaries;
+// GetPod returns the full, raw pod object for one known pod.
+//
+// It performs a single read-only get call.
+func GetPod(ctx context.Context, cs kubernetes.Interface, ns, name string) (*corev1.Pod, error) {
+	pod, err := cs.CoreV1().Pods(ns).Get(ctx, name, metav1.GetOptions{})
+	if err != nil {
+		return nil, fmt.Errorf("getting pod %s/%s: %w", ns, name, err)
+	}
+	return pod, nil
 }
 
 // formatAge renders a duration compactly using only its largest unit,
